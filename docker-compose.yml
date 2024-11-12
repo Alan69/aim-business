@@ -20,7 +20,7 @@ services:
   
   business:
     build:
-      context: ./business
+      context: ./
       dockerfile: Dockerfile
     command: >
       gunicorn --bind 0.0.0.0:8001 AIM_landing.wsgi:application

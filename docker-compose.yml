@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./media:/app/media
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - web
+    environment:
+      - TZ=Asia/Almaty
+    networks:
+      - business_network
+  
+  business:
+    build:
+      context: ./business
+      dockerfile: Dockerfile
+    command: >
+      gunicorn --bind 0.0.0.0:8001 AIM_landing.wsgi:application
+    volumes:
+      - ./business:/app
+      - ./business_media:/app/media
+    expose:
+      - "8001"
+    ports:
+      - "8001:8001"
+    environment:
+      - TZ=Asia/Almaty
+    networks:
+      - business_network
+
+networks:
+  business_network:

@@ -25,8 +25,8 @@ services:
     command: >
       gunicorn --bind 0.0.0.0:8001 AIM_landing.wsgi:application
     volumes:
-      - ./business:/app
-      - ./business_media:/app/media
+      - .:/app
+      - .:/app/media
     expose:
       - "8001"
     ports:
